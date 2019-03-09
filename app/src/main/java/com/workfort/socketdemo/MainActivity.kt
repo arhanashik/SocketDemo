@@ -36,6 +36,8 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    private var username: String? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -54,16 +56,22 @@ class MainActivity : AppCompatActivity() {
         if(TextUtils.isEmpty(message)) return
 
         et_message.setText("")
-        addMessage("me", message)
+
+        if(username == null) {
+            username = message
+            mSocket?.emit(Event.ADD_USER, message)
+            addMessage("system", "logged in as `$username`")
+            et_message.setHint(R.string.hint_message)
+            return
+        }
 
         mSocket?.emit(Event.NEW_MESSAGE, message)
+        addMessage("$username(me)", message)
     }
 
     private val onConnect = Emitter.Listener {
         runOnUiThread {
             addMessage("system", "Connected")
-            mSocket?.emit(Event.ADD_USER, "arhan")
-            addMessage("system", "New user added as 'arhan'")
         }
     }
 
@@ -109,7 +117,7 @@ class MainActivity : AppCompatActivity() {
                 return@Runnable
             }
 
-            addMessage("system", "$username joined. Total user: $numUsers")
+            addMessage("system", "`$username` joined. Total user: $numUsers")
         })
     }
 
@@ -126,7 +134,7 @@ class MainActivity : AppCompatActivity() {
                 return@Runnable
             }
 
-            addMessage("system", "$username left. Total user: $numUsers")
+            addMessage("system", "`$username` left. Total user: $numUsers")
         })
     }
 

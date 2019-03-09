@@ -2,4 +2,5 @@
     <string name="app_name">SocketDemo</string>
     <string name="hint_message">What do you want to say?</string>
     <string name="label_send">Send</string>
+    <string name="hint_username">Please choose an username</string>
 </resources>
