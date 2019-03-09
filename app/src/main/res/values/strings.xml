@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">SocketDemo</string>
+    <string name="hint_message">What do you want to say?</string>
+    <string name="label_send">Send</string>
+</resources>
